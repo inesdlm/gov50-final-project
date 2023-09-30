@@ -1,6 +1,6 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
+author: "Ines de la Morena"
 description: "My final project"
 output:
   distill::distill_article:
@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+I am interested in exploring data related to access to healthcare in minority communities accross the US. I also am interested in exploring the relationship between having a mentor growing up and achievement throughout life, though this might be harder to explore quantitatively. 
