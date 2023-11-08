@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","violence.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1518,8 +1518,28 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <h2 id="project-proposal">Project Proposal</h2>
-<p>What is the relationship between the GDP growth rate of Spain and the formation of separatist movements? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements in Spain. This is due to the widely known governmental theory that the higher the GDP of a nation, the less likely there is to be instability or democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity, using separatist movements as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate from 1960 to 1980 in Spain. I think this will give me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements. It is measured in the number of separatist movements at two distinct points in time: 1960 and 1975. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements. Alternatively, a positive GDP growth and a decrease in separatist movements in Spain. A pattern of growth coupled with a rise in separatist movements would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand Spanish politics and my background better.</p>
+<p>What is the relationship between the GDP growth rate of Spain and the formation of separatist movements? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements in Spain. This is due to the widely known governmental theory that the higher the GDP of a nation, the less likely there is to be instability or democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity, using separatist movements as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate from 1960 to 1980 in Spain. I think this will give me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements. It is measured in the number of separatist movements at two distinct points in time: 1960 and 1975. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements. Alternatively, a positive GDP growth and a decrease in separatist movements in Spain. A pattern of growth coupled with a rise in separatist movements would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand Spanish politics and my own background better.</p>
 <p>Data used: violence.csv</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='va'>violence</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>'violence.csv'</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>violence</span>,</span>
+<span>       mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>gyp70</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>separt75</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>"Growth rate of real per capita GDP 1970"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Percent of population belonging to separatist movements, 1975"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

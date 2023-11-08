@@ -8,8 +8,51 @@ output:
 ---
 
 
-## Project Proposal
+## Project Proposal Added Text
 
-What is the relationship between the GDP growth rate of Spain and the formation of separatist movements? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements in Spain. This is due to the widely known governmental theory that the higher the GDP of a nation, the less likely there is to be instability or democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity, using separatist movements as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate from 1960 to 1980 in Spain. I think this will give me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements. It is measured in the number of separatist movements at two distinct points in time: 1960 and 1975. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements. Alternatively, a positive GDP growth and a decrease in separatist movements in Spain. A pattern of growth coupled with a rise in separatist movements would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand Spanish politics and my background better. 
+What is the relationship between the GDP growth rate of Spain and the formation of separatist movements? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements in Spain. This is due to the widely known governmental theory that the higher the GDP of a nation, the less likely there is to be instability or democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity, using separatist movements as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate from 1960 to 1980 in Spain. I think this will give me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements. It is measured in the number of separatist movements at two distinct points in time: 1960 and 1975. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements. Alternatively, a positive GDP growth and a decrease in separatist movements in Spain. A pattern of growth coupled with a rise in separatist movements would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand Spanish politics and my own background better. 
 
 Data used: violence.csv
+
+
+```{r}
+library(dplyr)
+library(tidyverse)
+violence <- read_csv('violence.csv')
+```
+
+```{r}
+
+ggplot(data = violence,
+       mapping = aes(x = gyp70,
+                     y = separt75)) +
+  geom_point() +
+  labs(
+    x = "Growth rate of real per capita GDP 1970",
+    y = "Percent of population belonging to separatist movements, 1975"
+  )
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
