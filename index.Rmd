@@ -8,9 +8,9 @@ output:
 ---
 
 
-## Project Proposal Added Text
+## Project Proposal
 
-What is the relationship between the GDP growth rate of Spain and the formation of separatist movements? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements in Spain. This is due to the widely known governmental theory that the higher the GDP of a nation, the less likely there is to be instability or democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity, using separatist movements as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate from 1960 to 1980 in Spain. I think this will give me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements. It is measured in the number of separatist movements at two distinct points in time: 1960 and 1975. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements. Alternatively, a positive GDP growth and a decrease in separatist movements in Spain. A pattern of growth coupled with a rise in separatist movements would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand Spanish politics and my own background better. 
+What is the relationship between the GDP growth rate of Spain and the formation of separatist movements or revolutions? I believe that if GDP growth is stagnant or negative, there would be a small rise in separatist movements. In "How Democracies Die" by Ziblatt and Levitsky, they stated that the better the economic state of a nation, the less likely there is to be democratic breakdown. If this is true, then I am curious to see if it also increases or decreases national unity and discontent, using separatist movements and revoutions as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate. I think this will provide me a good amount of variation in the variable. The outcome that I am interested in exploring based on variations in GDP growth is separatist movements and revolts. It is measured in the number of separatist movements in 1975, and revolution by forced changes in the government elite in the 70s. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in separatist movements and revolutions. Alternatively, a positive GDP growth and low number of separatist movements or revolutions. A pattern of growth coupled with a rise in separatist/revolutionary sentiment would disprove my hypothesis, as well as its inverse. I am interested in exploring this relationship, or something similar to it, in order to understand politics and my own Spanish background better. 
 
 Data used: violence.csv
 
@@ -23,7 +23,7 @@ violence <- read_csv('violence.csv')
 
 ```{r}
 
-ggplot(data = violence,
+sep_gdp <- ggplot(data = violence,
        mapping = aes(x = gyp70,
                      y = separt75)) +
   geom_point() +
@@ -32,11 +32,24 @@ ggplot(data = violence,
     y = "Percent of population belonging to separatist movements, 1975"
   )
 
+sep_gdp
 ```
 
+```{r}
 
+rev_gdp <- ggplot(data = violence,
+       mapping = aes(x = gyp70,
+                     y = revols70)) +
+  geom_point() +
+  labs(
+    x = "Growth rate of real per capita GDP 1970",
+    y = "Any illegal or forced change in the top governmental elite, 1970"
+  )
+rev_gdp
 
+```
 
+The results of these analyses show that there are a lot of data points at the zero mark for both the separatist movements vs GDP and revolutions vs. GDP in the 70's around the world.  It seems like most data points are concentrated alomg the 0-0.05 GDP growth rate for both separatist and revolution graphs. For those on the higher extremes of GDP growth, there are few data points but they all seem to be closer to zero in the sep_gdp histogram, with a few exceptions/outliers. The second graph also as I said has a lot values at zero, and all are between 0-3. Those with repeated illegal or forced changes in government seem to be more concentrated in the low end of GDP growth, which could confirm my hypothesis that lowe levels of economic growth lead to more dissatisfaction with the ruling party. But, I would have to do more analyses to determine the significance. I think also for the second graph it would be good to perhaps represent it in another way such as a histogram or box plot. Overall, the regressions seem weak but perhaps if I get rid of the outliers or non-relevant values in future analyses my project could be more complex and complete. 
 
 
 
