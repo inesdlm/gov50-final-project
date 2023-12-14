@@ -7,46 +7,58 @@ output:
     self_contained: false
 ---
 
-Project Introduction
-Introduction: describe the research question and main hypothesis; describe why it is important. (1-2 paragraphs) (2pts)
+**Introduction**
+
+What is the relationship between the GDP growth rate and anti-government demonstrations? I believe that if GDP growth is stagnant or negative, there would be a rise in anti-government demonstrations. In "How Democracies Die" by Ziblatt and Levitsky, they stated that the better the economic state of a nation, the less likely there is to be democratic breakdown or civil unrest. If this is true, then I am curious to see if GDP growth over time increases or decreases national unity and discontent, using anti-government demonstrations as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory or independent variable is the real GDP growth rate, and the dependent variable is anti-government protests. The outcome that I am interested in exploring based on variations in GDP growth is anti-government demonstrations. It is measured in the number of anti-government demonstrations in 1960, 1970 and 1980, by country. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in anti-government demonstrations. Alternatively, a positive GDP growth and low number of anti-government demonstrations. A pattern of growth coupled with a rise in anti-government demonstrations or sentiment would disprove my hypothesis, as well as its inverse. My regression coefficient, when controling for initial GDP, should thus be negative. I am interested in exploring this relationship, or something similar to it, in order to understand politics and my own Spanish background better. 
 
 
-What is the relationship between the GDP growth rate and anti-government demonstrations? I believe that if GDP growth is stagnant or negative, there would be a rise in anti-government demonstrations. In "How Democracies Die" by Ziblatt and Levitsky, they stated that the better the economic state of a nation, the less likely there is to be democratic breakdown or civil unrest. If this is true, then I am curious to see if GDP growth over time increases or decreases national unity and discontent, using anti-government demonstrations as a sort of proxy. The data set I will be using is the political violence data set provided on the course website. Thus, my explanatory variable is the real GDP growth rate. The outcome that I am interested in exploring based on variations in GDP growth is anti-government demonstrations. It is measured in the number of anti-government demonstrations in 1960, 1970 and 1980, by country. To support my hypothesis, two relationships could be true. First, a negative or stagnant growth of GDP coupled with a rise in anti-government demonstrations. Alternatively, a positive GDP growth and low number of anti-government demonstrations. A pattern of growth coupled with a rise in anti-government demonstrations or sentiment would disprove my hypothesis, as well as its inverse. My regression coefficient, when controling for initial GDP, should thus be negative. I am interested in exploring this relationship, or something similar to it, in order to understand politics and my own Spanish background better. 
+**Data**
 
-
-Data 
 Data used: violence.csv
 
-This data is available on the course website. It consists of 208 rows, one for each of the countries in the dataframe, and over a hundred variables. The variables used for this project are the gyp (representing Growth rate of real per capita GDP), lrgdp (Log of initial Income: Log of real per capita GDP), and agovdem (Anti-government demonstrations: Any peaceful public gathering of at least 100 persons). The GDP and GDP growth data are from the Bureau of Economic Analysis. They each have the numbers 60, 70, or 80 as a suffix (representing the years 1960, 1970, and 1980, respectively). While I originally wished to do coups, coups were few and far between in the data set, and also set a high threshold for exemplifying government unrest. 
+This data is available on the course website. It consists of 208 rows, one for each of the countries in the dataframe, and over a hundred variables. The variables used for this project are the gyp (representing Growth rate of real per capita GDP), lrgdp (Log of initial Income: Log of real per capita GDP), and agovdem (Anti-government demonstrations: Any peaceful public gathering of at least 100 persons). The GDP per capita and GDP growth data are from the Bureau of Economic Analysis. They each have the numbers 60, 70, or 80 as a suffix (representing the years 1960, 1970, and 1980, respectively). While I originally wished to do coups, coups were few and far between in the data set, and also set a high threshold for exemplifying government unrest. 
 
-My research design is technically a longitudinal study that aims to pinpoint the relationship between GDP growth and anti-government protests. It takes into account three distinct points in time: 1960, 1970, and 1980. However, in order to reduce noise, the three variables were averaged across those three points in time. Although this gives me one value for each variable, it is not a study of a single distinct point in time and thus it can't accurately be described as a cross-sectional study. The data set-up process and the regression are shown below:   
+My research design is technically a longitudinal study that aims to pinpoint the relationship between GDP growth and anti-government protests. It takes into account three distinct points in time: 1960, 1970, and 1980. However, in order to reduce noise, and because the decades weren't of particular interest to my study, the three variables were averaged across those three points in time. Although this gives me one value for each variable, it is not a study of a single distinct point in time and thus it can't accurately be described as a cross-sectional study. The data set-up process and the visualization of the outcome variable are shown below:   
 
 ```{r}
 library(dplyr)
 library(tidyverse)
 violence <- read_csv('violence.csv')
 
-violence <- subset(violence, select = c(sftgname, agovdem60, gyp60, lrgdp60, agovdem70, gyp70, lrgdp70, agovdem80, gyp80, lrgdp80))
+violence <- subset(violence, select = c(sftgname, agovdem60, gyp60, lrgdp60, 
+                                        agovdem70, gyp70, lrgdp70, agovdem80, 
+                                        gyp80, lrgdp80))
 
 violence <- violence |>
  mutate(mean_protest = (agovdem60 + agovdem70 + agovdem80)/3,
         mean_growth = (gyp60 + gyp70 + gyp80)/3,
-        mean_gdp = (lrgdp60 + lrgdp70 + lrgdp80)/3)
+        mean_gdp = (lrgdp60 + lrgdp70 + lrgdp80)/3, 
+        sum_protest = (agovdem60 + agovdem70 + agovdem80))
 
+hist <- violence |>
+  ggplot(aes(x = sum_protest)) +
+  geom_histogram(fill = "lightpink") +
+  labs(
+    x = "Sum of Anti-Government Protests Over Three Decades",
+    y = "Density",
+    title = "Anti-Government Protests Worldwide in the 60s, 70s, and 80s"
+  ) 
+hist
+```
+
+Thus, my outcome of interest was mostly concentrated around zero. This means that most nations, over three decades, had no anti-government protests (a positive normative statistic). For the visualization of my outcome of interest, the regression of GDP growth and anti-government protests, I expected a downward trending line. This would signify that as the GDP growth rate increased, there would be less anti-government demonstrations, signifying content for the ruling party. Although my data had few values with negative GDP growth, I expected said values to have high positive correlations with anti-government demonstrations. If the country was not only not economically growing a lot but actually worsening, I would think that more people would demand some change in the government through anti-government demonstrations. In order to see if my hypothesis was true, I ran the regression.  
+
+**Results**
+
+```{r}
 regression_multiyear = lm(mean_protest ~  mean_growth + mean_gdp,
                data = violence)
 regression_multiyear
-```
-
-When looking at the data, it was clear to me that it was non-linear, and its shape resembled more a quadratic function. I thus used the loess method to visualize the regression I ran in the previous section in order to best fit the data. For the visualization of my outcome of interest, I expected a downward trending line. This would signify that as the GDP growth rate increased, there would be less anti-government demonstrations, signifying content for the ruling party. Although my data had few values with negative GDP growth, I expected said values to have high positive correlations with anti-government demonstrations. If the country was not only not improving a lot but worsening, I would think that more people would demand some change in the government through anti-government demonstrations. In order to see if my hypothesis was true, I visualized the data as follows: 
-
-
-```{r}
 
 scatter <- regression_multiyear |>
   ggplot(aes(x = mean_growth, y = mean_protest)) +
-  geom_point(color = "deeppink", alpha = 0.25) +
-  geom_smooth(method= 'loess') +
+  geom_point(color = "deeppink", alpha = 0.5) +
+  geom_smooth(method= 'loess', color = "palegreen3") +
   labs(
     x = "Average GDP Growth Rate",
     y = "Average Anti-government demonstrations, more than 100 people",
@@ -55,11 +67,10 @@ scatter <- regression_multiyear |>
 scatter
 
 ```
+When looking at the relationship, it was clear to me that it was non-linear, and its shape resembled more a quadratic function. I thus used the loess method to visualize the regression in order to best fit the data. The results did not change much when I altered the regression method to a linear correlation. 
 
-Results 
-Results section: plot of main analysis + regression output + 2-3 paragraphs of description and interpretation of the plots and regression (including interpreting the main coefficient of interest and describing if it is statistically significant and if we should interpret it causally). This section could be longer if you choose to include additional analyses. (8pts). For the results section, you should interpret (in plain English) the main coefficient of interest in your regression. You should also comment on the statistical significance of the estimated coefficient and whether or not you believe the coefficient to represent a causal effect.
 
-My data visualization surprised me. The results of my regression show an upward-sloping trend, with a peak at around 0.020 GDP growth rate. I looked back into the data and identified a few outliers, such as Uruguay and the United States in 1960. That year, there were around 20 anti-government protests in each country, in Uruguay due to growing stagflation and looming threat of dictatorship, and in the United States due to the Vietnam War. Regardless of these outliers and some others, the correlation peaks at around a 0.015 growth rate, or 1.5%. At this level, there is a likelihood of about 2 anti-government protests in a given year. As the GDP growth rate grows to 2% per year or more, there is a lower correlation with anti-government protests. At growth rates of 4% or more, there is not enough data to definitively state, as the graph would suggest, that anti-government protests would increase. The upward slope is mostly based on outliers such as Cyprus. In order to better understand this relationship, the regression coefficients and p-values were calculated as follows: 
+My data visualization surprised me. The results of my regression show an upward-sloping trend, with a peak at around 0.020 GDP growth rate. I looked back into the data and identified a few outliers, such as Uruguay and the United States in 1960. That year, there were around 20 anti-government protests in each country, in Uruguay due to growing stagflation and looming threat of dictatorship, and in the United States due to the Vietnam War. Regardless of these outliers and some others, the correlation peaks at around a 1.7% growth rate. At this level, there is a likelihood of about 2 anti-government protests in a given year. As the GDP growth rate grows to 2% per year or more, there is a lower correlation with anti-government protests, and a lesser likelihood of unrest. At growth rates of 4% or more, there is not enough data to definitively state, as the graph would suggest, that anti-government protests would increase. The upward slope is mostly based on outliers such as Cyprus. In order to better understand this relationship, the regression coefficients and p-values were calculated as follows: 
 
 ```{r}
 
@@ -73,12 +84,14 @@ regression
 
 ```
 
-Could the variable I controled for be a better predictor??
+The regression coefficient for my explanatory variable, GDP growth, is 0.12 at a 95% confidence level, or an alpha of 0.05. This means that for each one unit increase in mean GDP growth, we could expect anti-government protesting to increase by 0.12. The regression coefficient for my control variable, the GDP per capita level of each country, is 0.33. This suggests that, holding other variables constant, a one-unit increase in GDP per capita is associated with a 0.33 unit increase in anti-government protests. In order to determine the statistical significance, the p-values were calculated. 
 
-It seems like most data points are concentrated alomg the 0-0.05 GDP growth rate. For those on the higher extremes of GDP growth, there are few data points but they all seem to be closer to zero in the sep_gdp histogram, with a few exceptions/outliers. The second graph also as I said has a lot values at zero, and all are between 0-3. Those with repeated illegal or forced changes in government seem to be more concentrated in the low end of GDP growth, which could confirm my hypothesis that lowe levels of economic growth lead to more dissatisfaction with the ruling party. But, I would have to do more analyses to determine the significance. I think also for the second graph it would be good to perhaps represent it in another way such as a histogram or box plot. 
+The regression for GDP growth and anti-government protests has a p-value of 0.99, and that of GDP has a p-value of 0.12. The p-value is the probability of observing data as or more extreme if the null hypothesis is true. Thus, the probability for observing this data if there is no association between GDP growth and anti-government protests is 99%, which is extremely high. The p-value is lower for GDP per capita, my control variable, but it is still not low enough for the data to be statistically considered significant. Due to these results and the myriad of confounders in the study, we should also not interpret the relationship between the two variables as causal. 
 
-Conclusion 
-Conclusion section: 1 paragraph (i) summarizing results and assessing the extent to which you find support for your hypothesis; (ii) describing limitations of the analysis and threats to inference (missing data, confounding, etc), and stating how you could improve your analysis if you had more time/money. (2pts)
+
+**Conclusion**
+
+The study showed a positive correlation between GDP growth and anti-government protests worldwide. Although there was a positive regression coefficient of 0.12, the p-value was very high at 0.99. In practical terms, the results suggest that the relationship between GDP growth and anti-government protests may not be statistically significant. This means that the study fails to reject the null hypothesis of no effect, and thus I find little support for my overall hypothesis. This doesn't necessarily mean there is no real-world relationship, but rather that it wasn't convincingly detected in this study with the given data. However, the regression does reveal a possible correlation between fast-growing economies and low numbers of anti-government protests, which would be interesting to explore further and more closely to determine its significance. There were a lot of possible confounders such as wars, dictatorships, economic externalities, and any other major event that could have happened in these countries during this time period. There was a lot of missing data as well which makes the results more variable, uncertain, and possibly biased to the countries from which we were able to retrive the data at all. The variable of anti-government protests could also be inaccurate, especially in countries with dictators, media manipulation, or corruption. If I had more time and money I would control for the many confounders that could affect the results of the study and collect values for each individual year of every country. I would also collect survey responses from the citizens of various countries and see if they seem personally discontent with the government. This could paint a more accurate depiction of the approval rate of a ruling party without necessitating a protest with 100 or more people. I would maybe travel to individual countries, such as Spain, and try to collect accurate data by county, and add more response variables.  
 
 
 
